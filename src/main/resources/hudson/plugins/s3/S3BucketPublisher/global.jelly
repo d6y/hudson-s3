@@ -1,0 +1,55 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+  <!-- nothing to configure -->
+  <f:section title="Amazon S3 profiles">
+    <f:entry title="S3 profiles" description="Profiles for publishing to S3 buckets">
+      <f:repeatable var="profile" items="${descriptor.profiles}">
+        <table width="100%">
+          <f:entry title="Profile name" help="/plugin/s3/help-profile.html">
+            <f:textbox name="name" value="${profile.name}" />
+          </f:entry>
+          <f:entry title="Use IAM Role" help="/plugin/s3/help-role.html">
+            <f:checkbox name="useRole" value="${profile.useRole}" />
+          </f:entry>
+          <f:entry title="Access key" help="/plugin/s3/help-accesskey.html">
+            <f:textbox name="accessKey" value="${profile.accessKey}" />
+          </f:entry>
+          <f:entry title="Secret key" help="/plugin/s3/help-secretkey.html">
+            <f:password name="secretKey" value="${profile.secretKey}" />
+          </f:entry>
+          <f:validateButton
+             title="${%Test Connection}" progress="${%Testing...}"
+             method="loginCheck" with="name,useRole,accessKey,secretKey" />
+          <f:advanced>
+            <f:entry title="Max upload retries">
+                <f:number name="s3.maxUploadRetries" value="${profile.maxUploadRetries}"/>
+            </f:entry>
+            <f:entry title="Retry wait time (seconds) for uploading" >
+                <f:number name="s3.uploadRetryTime" value="${profile.uploadRetryTime}"/>
+            </f:entry>
+            <f:entry title="Max download retries">
+                <f:number name="s3.maxDownloadRetries" value="${profile.maxDownloadRetries}"/>
+            </f:entry>
+            <f:entry title="Retry wait time (seconds) for downloading" >
+                <f:number name="s3.downloadRetryTime" value="${profile.downloadRetryTime}"/>
+            </f:entry>
+            <f:entry title="Download URL expiry (seconds)" help="/plugin/s3/help-signedUrlExpirySeconds.html">
+              <f:number clazz="positive-number" name="s3.signedUrlExpirySeconds"
+                        value="${profile.signedUrlExpirySeconds}" default="60" />
+            </f:entry>
+            <f:entry title="Keep Structure" help="/plugin/s3/help-keepStructure.html">
+                <f:checkbox name="s3.keepStructure" value="${profile.keepStructure}" checked="${profile.keepStructure}"/>
+            </f:entry>
+          </f:advanced>
+
+          <f:entry title="">
+            <div align="right">
+              <f:repeatableDeleteButton />
+            </div>
+          </f:entry>
+
+        </table>
+      </f:repeatable>
+    </f:entry>
+  </f:section>
+</j:jelly>
