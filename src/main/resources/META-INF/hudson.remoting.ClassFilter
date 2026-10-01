@@ -1,0 +1,2 @@
+# Model object classes, no deserialization logic
+com.amazonaws.regions.Region
